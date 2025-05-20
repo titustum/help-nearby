@@ -22,9 +22,25 @@
     <!-- animate on scroll css -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+
+    <script>
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    // Send these coordinates to the server or use them in your calculations
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+
 </head>
 
 <body class="bg-gray-50 font-sans">
+
 
     <!-- Navbar -->
     <nav class="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-red-600">

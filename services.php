@@ -43,6 +43,44 @@ $stmt->execute();
 $result = $stmt->get_result();
 $services = $result->fetch_all(MYSQLI_ASSOC);
 
+$stmt->close();
+
+
+function calculateDistance($lat1, $lon1, $lat2, $lon2)
+{
+    $earthRadius = 6371; // Earth radius in kilometers
+
+    $latFrom = deg2rad($lat1);
+    $lonFrom = deg2rad($lon1);
+    $latTo = deg2rad($lat2);
+    $lonTo = deg2rad($lon2);
+
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
+
+    $a = sin($latDelta / 2) * sin($latDelta / 2) +
+        cos($latFrom) * cos($latTo) *
+        sin($lonDelta / 2) * sin($lonDelta / 2);
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+    return $earthRadius * $c; // Distance in kilometers
+}
+
+
+
+$userLat = 0.4232; // Example latitude
+$userLon = 36.9460; // Example longitude
+
+foreach ($services as &$service) {
+    $service['distance'] = calculateDistance($userLat, $userLon, $service['latitude'], $service['longitude']);
+}
+
+usort($services, function ($a, $b) {
+    return $a['distance'] <=> $b['distance'];
+});
+
+
+
 ?>
 
 
